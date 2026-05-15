@@ -511,11 +511,92 @@ function showCategoryInBrowse(cat){
   doSearch();
 }
 
+// Synonym map — expands common search terms to related equipment terminology.
+// Helps users find what they want even when their query doesn't exactly match product names.
+var SEARCH_SYNONYMS = {
+  'hot dog':    ['hot dog','hotdog','hot-dog','frankfurter','wiener','roller grill'],
+  'hotdog':     ['hot dog','hotdog','frankfurter','wiener'],
+  'frankfurter':['frankfurter','hot dog','wiener'],
+  'pizza':      ['pizza','conveyor oven','deck oven'],
+  'burger':     ['burger','patty','hamburger'],
+  'hamburger':  ['hamburger','burger','patty'],
+  'patty':      ['patty','burger','hamburger'],
+  'coffee':     ['coffee','espresso','cappuccino','latte'],
+  'espresso':   ['espresso','coffee','cappuccino'],
+  'cappuccino': ['cappuccino','espresso','coffee'],
+  'ice cream':  ['ice cream','soft serve','gelato'],
+  'soft serve': ['soft serve','ice cream','gelato'],
+  'gelato':     ['gelato','ice cream','soft serve'],
+  'fryer':      ['fryer','deep fryer','pressure fryer'],
+  'chicken':    ['chicken','pressure fryer','rotisserie','poultry'],
+  'rotisserie': ['rotisserie','chicken'],
+  'beer':       ['beer','kegerator','draft','keg'],
+  'keg':        ['keg','kegerator','beer','draft'],
+  'kegerator':  ['kegerator','keg','beer'],
+  'soda':       ['soda','beverage','fountain','cola'],
+  'walk-in':    ['walk-in','walk in','walkin'],
+  'reach-in':   ['reach-in','reach in','reachin'],
+  'steamer':    ['steamer','convection steamer'],
+  'kettle':     ['kettle','steam kettle'],
+  'oven':       ['oven','convection','deck oven','conveyor oven'],
+  'grill':      ['grill','griddle','flat top','broiler','charbroiler'],
+  'griddle':    ['griddle','flat top'],
+  'broiler':    ['broiler','salamander','cheese melter'],
+  'mixer':      ['mixer','planetary'],
+  'slicer':     ['slicer','meat slicer'],
+  'dishwasher': ['dishwasher','warewasher'],
+  'salamander': ['salamander','broiler','cheese melter'],
+  'sandwich':   ['sandwich','panini'],
+  'panini':     ['panini','sandwich press'],
+  'waffle':     ['waffle'],
+  'popcorn':    ['popcorn','popper'],
+  'salad':      ['salad','salad prep','mega top'],
+  'crepe':      ['crepe'],
+  'donut':      ['donut','doughnut'],
+  'doughnut':   ['donut','doughnut'],
+  'cooler':     ['cooler','refrigerator'],
+  'freezer':    ['freezer'],
+  'refrigerator':['refrigerator','cooler','reach-in'],
+  'ice':        ['ice','ice maker','ice machine','ice dispenser'],
+  'ice maker':  ['ice maker','ice machine'],
+  'ice machine':['ice machine','ice maker'],
+  'prep table': ['prep table','mega top','salad prep','sandwich prep','pizza prep'],
+  'food warmer':['food warmer','hot food','steam table','holding cabinet'],
+  'soup':       ['soup','kettle','soup warmer'],
+  'blender':    ['blender','smoothie'],
+  'smoothie':   ['smoothie','blender'],
+  'juicer':     ['juicer','juice'],
+  'toaster':    ['toaster','toast'],
+  'microwave':  ['microwave'],
+  'tea':        ['tea','tea brewer','iced tea'],
+  'iced tea':   ['iced tea','tea brewer','tea']
+};
+
+// Word-boundary regex match. Handles multi-word phrases too.
+function _wordMatch(text, term){
+  if(!text || !term) return false;
+  var escaped = term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  var pattern = new RegExp('\\b' + escaped + '\\b', 'i');
+  return pattern.test(text);
+}
+
 function doSearch(){
   var query = document.getElementById('searchInput').value.toLowerCase().trim();
   var condFilter = document.getElementById('filterCondition').value;
   var catFilter = document.getElementById('filterCategory').value;
   var sort = document.getElementById('sortBy').value;
+
+  // Build the list of phrase terms to search for: original query + synonym expansions.
+  var phraseTerms = [];
+  if(query.length >= 2) phraseTerms.push(query);
+  if(SEARCH_SYNONYMS[query]){
+    SEARCH_SYNONYMS[query].forEach(function(s){
+      if(phraseTerms.indexOf(s) < 0) phraseTerms.push(s);
+    });
+  }
+
+  // Individual words (for multi-word query matching as fallback)
+  var rawWords = query.split(/\s+/).filter(function(w){return w.length>=2;});
 
   var results = [];
 
@@ -529,46 +610,36 @@ function doSearch(){
       var catL = (item.display_category||'').toLowerCase();
       var descL = (item.description||'').toLowerCase();
       var kwL = (item.search_keywords||'').toLowerCase();
-      var condL = (item.condition||'').toLowerCase();
-      var fullText = nameL+' '+catL+' '+descL+' '+kwL+' '+condL;
 
-      // Check exact phrase match first (highest score)
-      if(nameL.indexOf(query)>=0) score += 100;
-      else if(catL.indexOf(query)>=0) score += 80;
-      else if(descL.indexOf(query)>=0) score += 60;
-      else if(kwL.indexOf(query)>=0) score += 40;
+      // Tier 1: Phrase/synonym match in NAME (highest score)
+      for(var p=0; p<phraseTerms.length; p++){
+        if(_wordMatch(nameL, phraseTerms[p])){ score += 200; break; }
+      }
 
-      // Check individual word matches
-      var words = query.split(/\s+/);
-      var allWordsMatch = true;
-      var wordScore = 0;
-      for(var i=0;i<words.length;i++){
-        var w = words[i];
-        if(w.length < 2) continue;
-        if(fullText.indexOf(w)<0){
-          allWordsMatch = false;
-        } else {
-          // Score based on where the word matched
-          if(nameL.indexOf(w)>=0) wordScore += 30;
-          else if(catL.indexOf(w)>=0) wordScore += 20;
-          else if(descL.indexOf(w)>=0) wordScore += 15;
-          else if(kwL.indexOf(w)>=0) wordScore += 10;
+      // Tier 2: Phrase/synonym match in category, keywords, or description
+      if(score === 0){
+        for(var p=0; p<phraseTerms.length; p++){
+          if(_wordMatch(catL, phraseTerms[p])){ score += 100; break; }
+          if(_wordMatch(kwL, phraseTerms[p])){ score += 80; break; }
+          if(_wordMatch(descL, phraseTerms[p])){ score += 60; break; }
         }
       }
 
-      if(score === 0 && !allWordsMatch){
-        // Partial match: at least half the words must match
-        var matchCount = 0;
-        for(var i=0;i<words.length;i++){
-          if(words[i].length < 2) continue;
-          if(fullText.indexOf(words[i])>=0) matchCount++;
+      // Tier 3: For multi-word queries, ALL individual words must appear (word-bounded)
+      // No partial-match fallback — prevents "hot dog" matching things with just "hot"
+      if(score === 0 && rawWords.length > 1){
+        var allMatch = true;
+        var wordScore = 0;
+        for(var i=0; i<rawWords.length; i++){
+          var w = rawWords[i];
+          var matched = false;
+          if(_wordMatch(nameL, w)){ wordScore += 30; matched = true; }
+          else if(_wordMatch(catL, w)){ wordScore += 20; matched = true; }
+          else if(_wordMatch(kwL, w)){ wordScore += 15; matched = true; }
+          else if(_wordMatch(descL, w)){ wordScore += 10; matched = true; }
+          if(!matched){ allMatch = false; break; }
         }
-        var significantWords = words.filter(function(w){return w.length>=2;}).length;
-        if(significantWords > 0 && matchCount >= Math.ceil(significantWords * 0.5)){
-          score = wordScore * (matchCount / significantWords);
-        }
-      } else if(allWordsMatch){
-        score += wordScore;
+        if(allMatch) score = wordScore;
       }
 
       if(score === 0) return;
