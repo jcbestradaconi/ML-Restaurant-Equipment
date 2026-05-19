@@ -126,19 +126,21 @@ a{color:#2563eb;text-decoration:none}
 .card.sold-out .card-img::after{content:'SOLD';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(220,38,38,.9);color:#fff;font-size:1.5rem;font-weight:800;padding:.5rem 1.5rem;border-radius:8px;letter-spacing:2px}
 
 .bundles-section{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:2rem;border-radius:12px;margin:2rem 0}
-.bundles-section h2{color:#fff;font-size:1.5rem;text-align:center;margin-bottom:1rem}
-.bundle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
-.bundle-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1.2rem;transition:all .2s}
+.bundles-section h2{color:#fff;font-size:1.5rem;text-align:center;margin-bottom:.4rem}
+.bundles-subhead{color:#cbd5e1;font-size:.95rem;text-align:center;margin-bottom:1.5rem;max-width:700px;margin-left:auto;margin-right:auto;line-height:1.5}
+.bundle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem}
+.bundle-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1.2rem;transition:all .2s;display:flex;flex-direction:column}
 .bundle-card:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
 .bundle-icon{font-size:2rem;margin-bottom:.5rem}
 .bundle-name{color:#f59e0b;font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
 .bundle-desc{color:#94a3b8;font-size:.8rem;margin-bottom:.8rem;line-height:1.4}
-.bundle-pricing{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.3rem}
-.bundle-price{color:#10b981;font-size:1.3rem;font-weight:800}
-.bundle-original{color:#64748b;text-decoration:line-through;font-size:.85rem}
-.bundle-savings{color:#f59e0b;font-size:.8rem;font-weight:600}
-.btn-bundle{display:block;width:100%;padding:.5rem;background:#f59e0b;color:#1a1a2e;border:none;border-radius:6px;font-weight:700;cursor:pointer;margin-top:.5rem;font-size:.85rem}
-.btn-bundle:hover{background:#d97706}
+.bundle-items-label{color:#e2e8f0;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;margin-top:.3rem}
+.bundle-items-list{list-style:none;padding:0;margin:0 0 1rem 0;display:flex;flex-direction:column;gap:.3rem;flex:1}
+.bundle-item-link{display:block;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#e2e8f0;padding:.5rem .7rem;border-radius:6px;font-size:.78rem;line-height:1.35;cursor:pointer;transition:all .15s;text-align:left;width:100%;font-family:inherit}
+.bundle-item-link:hover{background:rgba(245,158,11,.18);border-color:#f59e0b;color:#fff;transform:translateX(2px)}
+.bundle-item-link .arrow{float:right;color:#f59e0b;font-weight:700;margin-left:.4rem}
+.btn-bundle{display:block;width:100%;padding:.6rem;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);color:#fff;border:none;border-radius:6px;font-weight:700;cursor:pointer;font-size:.85rem;margin-top:auto;box-shadow:0 2px 6px rgba(217,119,6,.3)}
+.btn-bundle:hover{background:linear-gradient(135deg,#d97706 0%,#b45309 100%)}
 
 .services{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin:2rem auto;max-width:1100px;justify-content:center}
 @media(min-width:1000px){.services{grid-template-columns:repeat(4,1fr)}}
@@ -264,7 +266,8 @@ a{color:#2563eb;text-decoration:none}
   <div id="homeCatalog"></div>
 
   <div class="bundles-section" id="bundles">
-    <h2>&#x1f4e6; Bundle Deals — Save Up to 25%</h2>
+    <h2>&#x1f4e6; Bundled Pricing &mdash; Get an Even Better Deal</h2>
+    <p class="bundles-subhead">Buy multiple items together and save. Click any item below to view it, or submit one offer for the whole bundle &mdash; we&rsquo;ll work with you on the best price.</p>
     <div class="bundle-grid" id="bundleGrid"></div>
   </div>
 </div>
@@ -807,26 +810,55 @@ function doSearch(){
 function buildBundles(){
   var grid = document.getElementById('bundleGrid');
   var icons = {pizza:'\ud83c\udf55',wine:'\ud83c\udf77',flame:'\ud83d\udd25',knife:'\ud83d\udd2a',factory:'\ud83c\udfed'};
+  // Build a quick id-to-item lookup so we can resolve each bundle's item IDs to names
+  var byId = {};
+  CATALOG.forEach(function(it){ byId[it.id] = it; });
+
   BUNDLES.forEach(function(b){
     var card = document.createElement('div');
     card.className = 'bundle-card';
+
+    // Build the clickable item list
+    var itemsHtml = '<ul class="bundle-items-list">';
+    (b.items || []).forEach(function(itemId){
+      var it = byId[itemId];
+      if(!it) return; // skip missing items gracefully
+      var safeName = escHtml(it.name).substring(0,80);
+      var safeCond = escHtml(it.condition||'');
+      var retail = it.retail_price || 0;
+      // Each item is a button that opens the offer modal for that specific item
+      itemsHtml += '<li><button type="button" class="bundle-item-link" '+
+        'onclick="openOfferModal(\''+safeName.replace(/\\/g,"\\\\").replace(/'/g,"\\'")+'\',\''+safeCond.replace(/'/g,"\\'")+'\','+String(retail)+')">'+
+        safeName + '<span class="arrow">&rarr;</span></button></li>';
+    });
+    itemsHtml += '</ul>';
+
     card.innerHTML = '<div class="bundle-icon">'+(icons[b.icon]||'\ud83d\udce6')+'</div>'+
-      '<div class="bundle-name">'+b.name+'</div>'+
-      '<div class="bundle-desc">'+b.description+'</div>'+
-      '<div class="bundle-pricing">'+
-      '<span class="bundle-price">$'+formatNum(b.bundle_price)+'</span>'+
-      '<span class="bundle-original">$'+formatNum(b.individual_total)+'</span>'+
-      '</div>'+
-      '<div class="bundle-savings">Save $'+formatNum(b.savings)+' ('+Math.round(b.discount*100)+'% off)</div>'+
-      '<button class="btn-bundle" onclick="inquireBundle(\''+b.name.replace(/'/g,"\\'")+'\','+String(b.bundle_price)+')">Inquire About Bundle</button>';
+      '<div class="bundle-name">'+escHtml(b.name)+'</div>'+
+      '<div class="bundle-desc">'+escHtml(b.description||'')+'</div>'+
+      '<div class="bundle-items-label">Bundle Includes &mdash; click any to make an offer:</div>'+
+      itemsHtml+
+      '<button class="btn-bundle" onclick="openBundleOffer(\''+b.name.replace(/'/g,"\\'")+'\')">&#x1f3f7;&#xfe0f; Make an Offer on Whole Bundle</button>';
     grid.appendChild(card);
   });
 }
 
-function inquireBundle(name,price){
-  showPage('contact');
-  document.getElementById('cf-interest').value = 'Bundle Deal';
-  document.getElementById('cf-message').value = 'Hi, I am interested in the "'+name+'" bundle at $'+formatNum(price)+'.\n\nPlease send me more details.';
+// Open the offer modal pre-populated for a whole bundle (no individual item, no retail anchor)
+function openBundleOffer(bundleName){
+  document.getElementById('offerModalItemName').textContent = '[Bundle] ' + bundleName;
+  document.getElementById('offerHiddenItem').value = '[Bundle] ' + bundleName;
+  document.getElementById('offerHiddenCondition').value = 'Bundle';
+  document.getElementById('offerHiddenRetail').value = 0;
+  document.getElementById('offerRetailDisplay').style.display = 'none';
+  document.getElementById('offerForm').reset();
+  // Reset hidden fields again after the .reset()
+  document.getElementById('offerHiddenItem').value = '[Bundle] ' + bundleName;
+  document.getElementById('offerHiddenCondition').value = 'Bundle';
+  document.getElementById('offerHiddenRetail').value = 0;
+  document.getElementById('offerSuccess').classList.remove('active');
+  document.getElementById('offerForm').style.display = 'block';
+  document.getElementById('offerModal').classList.add('active');
+  setTimeout(function(){ document.getElementById('offerAmount').focus(); }, 100);
 }
 
 function submitForm(e){
