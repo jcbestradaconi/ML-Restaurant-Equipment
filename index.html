@@ -99,8 +99,15 @@ a{color:#2563eb;text-decoration:none}
 .offer-modal-backdrop.active{display:flex}
 .offer-modal{background:#fff;border-radius:14px;max-width:500px;width:100%;padding:0;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;max-height:95vh;overflow-y:auto}
 .offer-modal-header{background:linear-gradient(135deg,#1a1a2e 0%,#2d2d4d 100%);color:#fff;padding:1.2rem 1.5rem;border-radius:14px 14px 0 0;position:relative}
-.offer-modal-header h3{margin:0;font-size:1.2rem}
-.offer-modal-header .item-name{font-size:.85rem;opacity:.85;margin-top:.3rem;font-weight:400}
+.offer-modal-header h3{margin:0 0 .6rem 0;font-size:1.2rem}
+.offer-modal-header .item-name{font-size:.9rem;opacity:.95;margin-top:.2rem;font-weight:600;line-height:1.3}
+.offer-modal-itemrow{display:flex;gap:.8rem;align-items:flex-start;margin-top:.3rem}
+.offer-modal-image{width:74px;height:74px;border-radius:8px;object-fit:cover;background:#fff;flex-shrink:0;border:1px solid rgba(255,255,255,.15)}
+.offer-modal-image-placeholder{width:74px;height:74px;border-radius:8px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;border:1px solid rgba(255,255,255,.12)}
+.offer-modal-iteminfo{flex:1;min-width:0}
+.offer-modal-condition{display:inline-block;background:rgba(245,158,11,.25);color:#fcd34d;font-size:.72rem;font-weight:700;padding:.18rem .5rem;border-radius:4px;margin-top:.35rem;text-transform:uppercase;letter-spacing:.3px}
+.offer-modal-bundle-items{margin-top:.6rem;font-size:.78rem;line-height:1.5;color:#cbd5e1;background:rgba(255,255,255,.05);padding:.6rem .75rem;border-radius:6px;border-left:3px solid #f59e0b}
+.offer-modal-bundle-items strong{color:#fcd34d;display:block;margin-bottom:.2rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px}
 .offer-modal-close{position:absolute;top:.8rem;right:1rem;background:transparent;border:none;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1;padding:.2rem .5rem;border-radius:4px}
 .offer-modal-close:hover{background:rgba(255,255,255,.15)}
 .offer-modal-body{padding:1.5rem}
@@ -128,8 +135,10 @@ a{color:#2563eb;text-decoration:none}
 .bundles-section{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:2rem;border-radius:12px;margin:2rem 0}
 .bundles-section h2{color:#fff;font-size:1.5rem;text-align:center;margin-bottom:.4rem}
 .bundles-subhead{color:#cbd5e1;font-size:.95rem;text-align:center;margin-bottom:1.5rem;max-width:700px;margin-left:auto;margin-right:auto;line-height:1.5}
-.bundle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem}
-.bundle-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1.2rem;transition:all .2s;display:flex;flex-direction:column}
+.bundle-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem}
+.bundle-card{flex:0 1 calc(33.333% - 0.667rem);min-width:280px;max-width:380px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1.2rem;transition:all .2s;display:flex;flex-direction:column;box-sizing:border-box}
+@media (max-width:900px){.bundle-card{flex:0 1 calc(50% - 0.5rem)}}
+@media (max-width:600px){.bundle-card{flex:0 1 100%;max-width:none}}
 .bundle-card:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
 .bundle-icon{font-size:2rem;margin-bottom:.5rem}
 .bundle-name{color:#f59e0b;font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
@@ -513,7 +522,7 @@ function buildCard(item){
     actionsHtml = '<div class="card-actions"><span class="btn-sm" style="background:#fee2e2;color:#991b1b;cursor:default;flex:1;text-align:center;font-weight:700">Sold Out</span></div>';
   } else {
     actionsHtml = '<div class="card-actions">'+
-    '<a class="btn-sm btn-make-offer" onclick="openOfferModal(\''+escHtml(item.name).substring(0,80).replace(/'/g,"\\'")+'\',\''+escHtml(cond).replace(/'/g,"\\'")+'\','+String(item.retail_price||0)+')">&#x1f3f7;&#xfe0f; Make an Offer</a>'+
+    '<a class="btn-sm btn-make-offer" onclick="openOfferModal('+item.id+')">&#x1f3f7;&#xfe0f; Make an Offer</a>'+
     (item.product_url ? '<a class="btn-sm btn-specs" href="'+item.product_url+'" target="_blank" rel="noopener">Specs</a>' : '')+
     '</div>';
   }
@@ -528,28 +537,62 @@ function buildCard(item){
   return card;
 }
 
-// OFFERS VERSION: opens modal for offer submission instead of jumping to contact page.
-function openOfferModal(name, cond, retail){
-  document.getElementById('offerModalItemName').textContent = name;
-  document.getElementById('offerHiddenItem').value = name;
-  document.getElementById('offerHiddenCondition').value = cond || '';
-  document.getElementById('offerHiddenRetail').value = retail || 0;
+// OFFERS VERSION: opens modal for offer submission. Accepts a CATALOG item id.
+function openOfferModal(itemId){
+  var item = null;
+  // Find item by id. itemId may be number or string.
+  for(var i=0;i<CATALOG.length;i++){
+    if(CATALOG[i].id === itemId || String(CATALOG[i].id) === String(itemId)){ item = CATALOG[i]; break; }
+  }
+  if(!item){ console.warn('openOfferModal: item not found for id', itemId); return; }
+
+  // Show single-item row, hide bundle list
+  document.getElementById('offerSingleItemRow').style.display = 'flex';
+  document.getElementById('offerBundleItems').style.display = 'none';
+
+  // Image (if available)
+  var imgEl = document.getElementById('offerItemImage');
+  var phEl = document.getElementById('offerItemImagePh');
+  if(item.image_url){
+    imgEl.src = item.image_url;
+    imgEl.alt = item.name.substring(0,80);
+    imgEl.style.display = 'block';
+    phEl.style.display = 'none';
+    imgEl.onerror = function(){ imgEl.style.display='none'; phEl.style.display='flex'; };
+  } else {
+    imgEl.style.display = 'none';
+    phEl.style.display = 'flex';
+  }
+
+  // Name
+  document.getElementById('offerModalItemName').textContent = item.name;
+
+  // Condition badge
+  var condEl = document.getElementById('offerItemCondition');
+  if(item.condition){
+    condEl.textContent = 'Condition: ' + item.condition;
+    condEl.style.display = 'inline-block';
+  } else {
+    condEl.style.display = 'none';
+  }
+
+  // Retail anchor
   var retailLine = document.getElementById('offerRetailDisplay');
-  if(retail && retail > 0){
-    retailLine.textContent = 'MSRP / Retail: $' + formatNum(retail);
+  if(item.retail_price && item.retail_price > 0){
+    retailLine.textContent = 'MSRP / Retail: $' + formatNum(item.retail_price);
     retailLine.style.display = 'block';
   } else {
     retailLine.style.display = 'none';
   }
-  // Reset form
+
+  // Reset form, then re-stamp hidden fields
   document.getElementById('offerForm').reset();
-  document.getElementById('offerHiddenItem').value = name;
-  document.getElementById('offerHiddenCondition').value = cond || '';
-  document.getElementById('offerHiddenRetail').value = retail || 0;
+  document.getElementById('offerHiddenItem').value = item.name;
+  document.getElementById('offerHiddenCondition').value = item.condition || '';
+  document.getElementById('offerHiddenRetail').value = item.retail_price || 0;
   document.getElementById('offerSuccess').classList.remove('active');
   document.getElementById('offerForm').style.display = 'block';
   document.getElementById('offerModal').classList.add('active');
-  // Focus offer amount field
   setTimeout(function(){ document.getElementById('offerAmount').focus(); }, 100);
 }
 function closeOfferModal(){
@@ -591,8 +634,11 @@ document.addEventListener('click', function(e){
 document.addEventListener('keydown', function(e){
   if(e.key === 'Escape'){ closeOfferModal(); }
 });
-// Backward compatibility (in case anything else still calls inquireItem)
-function inquireItem(name, cond, price){ openOfferModal(name, cond, 0); }
+// Backward compatibility (legacy): try to resolve by name and open modal
+function inquireItem(name, cond, price){
+  var match = CATALOG.find(function(i){ return i.name === name; });
+  if(match) openOfferModal(match.id);
+}
 
 function showCategoryInBrowse(cat){
   showPage('browse');
@@ -818,41 +864,59 @@ function buildBundles(){
     var card = document.createElement('div');
     card.className = 'bundle-card';
 
-    // Build the clickable item list
+    // Build the clickable item list \u2014 each entry shows item name + condition badge
     var itemsHtml = '<ul class="bundle-items-list">';
     (b.items || []).forEach(function(itemId){
       var it = byId[itemId];
-      if(!it) return; // skip missing items gracefully
+      if(!it) return;
       var safeName = escHtml(it.name).substring(0,80);
       var safeCond = escHtml(it.condition||'');
-      var retail = it.retail_price || 0;
-      // Each item is a button that opens the offer modal for that specific item
       itemsHtml += '<li><button type="button" class="bundle-item-link" '+
-        'onclick="openOfferModal(\''+safeName.replace(/\\/g,"\\\\").replace(/'/g,"\\'")+'\',\''+safeCond.replace(/'/g,"\\'")+'\','+String(retail)+')">'+
-        safeName + '<span class="arrow">&rarr;</span></button></li>';
+        'onclick="openOfferModal('+it.id+')" title="Make an offer on this item">'+
+        safeName + (safeCond ? ' <span style="opacity:.7;font-size:.72rem">('+safeCond+')</span>' : '') +
+        '<span class="arrow">&rarr;</span></button></li>';
     });
     itemsHtml += '</ul>';
 
+    var bundleKey = b.slug || b.name;
     card.innerHTML = '<div class="bundle-icon">'+(icons[b.icon]||'\ud83d\udce6')+'</div>'+
       '<div class="bundle-name">'+escHtml(b.name)+'</div>'+
       '<div class="bundle-desc">'+escHtml(b.description||'')+'</div>'+
       '<div class="bundle-items-label">Bundle Includes &mdash; click any to make an offer:</div>'+
       itemsHtml+
-      '<button class="btn-bundle" onclick="openBundleOffer(\''+b.name.replace(/'/g,"\\'")+'\')">&#x1f3f7;&#xfe0f; Make an Offer on Whole Bundle</button>';
+      '<button class="btn-bundle" onclick="openBundleOffer(\''+bundleKey.replace(/'/g,"\\'")+'\')">&#x1f3f7;&#xfe0f; Make an Offer on Whole Bundle</button>';
     grid.appendChild(card);
   });
 }
 
-// Open the offer modal pre-populated for a whole bundle (no individual item, no retail anchor)
-function openBundleOffer(bundleName){
-  document.getElementById('offerModalItemName').textContent = '[Bundle] ' + bundleName;
-  document.getElementById('offerHiddenItem').value = '[Bundle] ' + bundleName;
-  document.getElementById('offerHiddenCondition').value = 'Bundle';
-  document.getElementById('offerHiddenRetail').value = 0;
-  document.getElementById('offerRetailDisplay').style.display = 'none';
+// Open the offer modal for a whole bundle. Shows the bundle name + comma-separated item list with conditions.
+function openBundleOffer(bundleSlug){
+  // Find bundle by slug or name
+  var b = null;
+  for(var i=0;i<BUNDLES.length;i++){
+    if(BUNDLES[i].slug === bundleSlug || BUNDLES[i].name === bundleSlug){ b = BUNDLES[i]; break; }
+  }
+  if(!b){ console.warn('openBundleOffer: bundle not found for', bundleSlug); return; }
+
+  // Build comma-separated item list: "Name (Condition), Name (Condition), ..."
+  var byId = {};
+  CATALOG.forEach(function(it){ byId[it.id] = it; });
+  var parts = (b.items||[]).map(function(id){
+    var it = byId[id]; if(!it) return null;
+    var cond = it.condition ? ' (' + it.condition + ')' : '';
+    return it.name + cond;
+  }).filter(Boolean);
+  var itemListText = parts.join(', ');
+
+  // Hide single-item row, show bundle items list
+  document.getElementById('offerSingleItemRow').style.display = 'none';
+  document.getElementById('offerBundleItems').style.display = 'block';
+  document.getElementById('offerBundleItemsText').textContent = itemListText;
+
+  // Still set the item-name field at top (visible in single row; hidden here) and Formspree hidden fields
+  document.getElementById('offerModalItemName').textContent = '[Bundle] ' + b.name;
   document.getElementById('offerForm').reset();
-  // Reset hidden fields again after the .reset()
-  document.getElementById('offerHiddenItem').value = '[Bundle] ' + bundleName;
+  document.getElementById('offerHiddenItem').value = '[Bundle] ' + b.name + ' — Items: ' + itemListText;
   document.getElementById('offerHiddenCondition').value = 'Bundle';
   document.getElementById('offerHiddenRetail').value = 0;
   document.getElementById('offerSuccess').classList.remove('active');
@@ -929,8 +993,19 @@ function formatNum(n){
     <div class="offer-modal-header">
       <button class="offer-modal-close" onclick="closeOfferModal()" aria-label="Close">&times;</button>
       <h3 id="offerModalHeading">&#x1f3f7;&#xfe0f; Submit Your Best Offer</h3>
-      <div class="item-name" id="offerModalItemName"></div>
-      <div class="item-name" id="offerRetailDisplay" style="margin-top:.2rem;font-style:italic"></div>
+      <div class="offer-modal-itemrow" id="offerSingleItemRow">
+        <img id="offerItemImage" class="offer-modal-image" alt="" style="display:none">
+        <div id="offerItemImagePh" class="offer-modal-image-placeholder" style="display:none">&#x1f4e6;</div>
+        <div class="offer-modal-iteminfo">
+          <div class="item-name" id="offerModalItemName"></div>
+          <div id="offerItemCondition" class="offer-modal-condition" style="display:none"></div>
+          <div class="item-name" id="offerRetailDisplay" style="margin-top:.3rem;font-style:italic;font-weight:400;opacity:.85"></div>
+        </div>
+      </div>
+      <div id="offerBundleItems" class="offer-modal-bundle-items" style="display:none">
+        <strong>Bundle Includes:</strong>
+        <span id="offerBundleItemsText"></span>
+      </div>
     </div>
     <div class="offer-modal-body">
       <form id="offerForm" onsubmit="return submitOffer(event)">
