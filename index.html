@@ -60,6 +60,7 @@ a{color:#2563eb;text-decoration:none}
 .search-icon{position:absolute;left:.8rem;top:50%;transform:translateY(-50%);color:#94a3b8}
 .search-filters{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem}
 .search-filters select{padding:.4rem .8rem;border:1px solid #e2e8f0;border-radius:6px;font-size:.85rem;background:#fff;cursor:pointer}
+.location-title{font-size:1.6rem;font-weight:800;color:#1f2937;margin:2.2rem 0 .6rem;padding:.3rem 0 .4rem;border-bottom:3px solid #1f4e78}
 .result-count{text-align:center;color:#64748b;font-size:.85rem;margin-bottom:1rem}
 
 .section-title{font-size:1.3rem;font-weight:700;margin:1.5rem 0 .8rem;padding-bottom:.3rem;border-bottom:2px solid #f59e0b;display:inline-block}
@@ -304,6 +305,11 @@ a{color:#2563eb;text-decoration:none}
     <select id="filterCategory" onchange="doSearch()">
       <option value="">All Categories</option>
     </select>
+    <select id="filterLocation" onchange="doSearch()">
+      <option value="">All Locations</option>
+      <option value="Broward">Broward County</option>
+      <option value="Freight &amp; Aruba">Outside Broward County</option>
+    </select>
     <select id="sortBy" onchange="doSearch()">
       <option value="relevance">Sort: Relevance</option>
       <option value="name_az">Name: A-Z</option>
@@ -454,6 +460,7 @@ function buildCatTabs(){
   });
 }
 
+var LOCATIONS=[{key:'Broward',label:'Broward County'},{key:'Freight & Aruba',label:'Outside Broward County'}];
 function buildCategoryFilter(){
   var sel = document.getElementById('filterCategory');
   CATEGORIES.forEach(function(cat){
@@ -720,6 +727,7 @@ function doSearch(){
   var query = document.getElementById('searchInput').value.toLowerCase().trim();
   var condFilter = document.getElementById('filterCondition').value;
   var catFilter = document.getElementById('filterCategory').value;
+  var locFilter = document.getElementById('filterLocation').value;
   var sort = document.getElementById('sortBy').value;
 
   // Build the list of phrase terms to search for: original query + synonym expansions.
@@ -739,6 +747,7 @@ function doSearch(){
   CATALOG.forEach(function(item){
     if(condFilter && item.condition.indexOf(condFilter)<0) return;
     if(catFilter && item.display_category!==catFilter) return;
+    if(locFilter && item.location!==locFilter) return;
 
     var score = 0;
     if(query){
@@ -806,23 +815,39 @@ function doSearch(){
   container.innerHTML = '';
 
   if(!query && !condFilter && !catFilter){
-    CATEGORIES.forEach(function(cat){
-      var catItems = items.filter(function(i){return i.display_category===cat;});
-      if(catItems.length===0) return;
-      var header = document.createElement('h3');
-      header.className = 'section-title';
-      header.textContent = cat + ' (' + catItems.length + ')';
-      container.appendChild(header);
-      var grid = document.createElement('div');
-      grid.className = 'grid';
-      catItems.forEach(function(item){grid.appendChild(buildCard(item));});
-      container.appendChild(grid);
+    LOCATIONS.forEach(function(loc){
+      var locItems = items.filter(function(i){return i.location===loc.key;});
+      if(locItems.length===0) return;
+      var lh = document.createElement('h2');
+      lh.className = 'location-title';
+      lh.textContent = loc.label + ' (' + locItems.length + ')';
+      container.appendChild(lh);
+      CATEGORIES.forEach(function(cat){
+        var catItems = locItems.filter(function(i){return i.display_category===cat;});
+        if(catItems.length===0) return;
+        var header = document.createElement('h3');
+        header.className = 'section-title';
+        header.textContent = cat + ' (' + catItems.length + ')';
+        container.appendChild(header);
+        var grid = document.createElement('div');
+        grid.className = 'grid';
+        catItems.forEach(function(item){grid.appendChild(buildCard(item));});
+        container.appendChild(grid);
+      });
     });
   } else if(!query && catFilter){
-    var grid = document.createElement('div');
-    grid.className = 'grid';
-    items.forEach(function(item){grid.appendChild(buildCard(item));});
-    container.appendChild(grid);
+    LOCATIONS.forEach(function(loc){
+      var locItems = items.filter(function(i){return i.location===loc.key;});
+      if(locItems.length===0) return;
+      var lh = document.createElement('h2');
+      lh.className = 'location-title';
+      lh.textContent = loc.label + ' (' + locItems.length + ')';
+      container.appendChild(lh);
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      locItems.forEach(function(item){grid.appendChild(buildCard(item));});
+      container.appendChild(grid);
+    });
   } else {
     // Group search results by category for organized display
     var catGroups = {};
