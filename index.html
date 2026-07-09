@@ -85,47 +85,12 @@ a{color:#2563eb;text-decoration:none}
 .price-main{font-size:1.2rem;font-weight:800;color:#059669}
 .price-sub{font-size:.7rem;color:#94a3b8;display:block}
 .price-retail{text-decoration:line-through;color:#94a3b8;font-size:.75rem;margin-left:.3rem}
-.price-retail-struck{text-decoration:line-through;color:#94a3b8;font-size:.9rem;font-weight:600;display:inline-block}
 .price-repair{font-size:.7rem;color:#dc2626;margin-top:.2rem}
 
 .card-actions{display:flex;gap:.4rem}
 .btn-sm{flex:1;padding:.4rem;border-radius:6px;font-size:.75rem;font-weight:600;text-align:center;cursor:pointer;border:none;transition:all .2s}
 .btn-inquire{background:#f59e0b;color:#1a1a2e}
 .btn-inquire:hover{background:#d97706}
-.btn-make-offer{background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);color:#fff;font-weight:700;padding:.55rem;font-size:.8rem;box-shadow:0 2px 6px rgba(217,119,6,.3)}
-.btn-make-offer:hover{background:linear-gradient(135deg,#d97706 0%,#b45309 100%);transform:translateY(-1px);box-shadow:0 4px 10px rgba(217,119,6,.4)}
-
-/* OFFER MODAL */
-.offer-modal-backdrop{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:1rem;overflow-y:auto}
-.offer-modal-backdrop.active{display:flex}
-.offer-modal{background:#fff;border-radius:14px;max-width:500px;width:100%;padding:0;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;max-height:95vh;overflow-y:auto}
-.offer-modal-header{background:linear-gradient(135deg,#1a1a2e 0%,#2d2d4d 100%);color:#fff;padding:1.2rem 1.5rem;border-radius:14px 14px 0 0;position:relative}
-.offer-modal-header h3{margin:0 0 .6rem 0;font-size:1.2rem}
-.offer-modal-header .item-name{font-size:.9rem;opacity:.95;margin-top:.2rem;font-weight:600;line-height:1.3}
-.offer-modal-itemrow{display:flex;gap:.8rem;align-items:flex-start;margin-top:.3rem}
-.offer-modal-image{width:74px;height:74px;border-radius:8px;object-fit:cover;background:#fff;flex-shrink:0;border:1px solid rgba(255,255,255,.15)}
-.offer-modal-image-placeholder{width:74px;height:74px;border-radius:8px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;border:1px solid rgba(255,255,255,.12)}
-.offer-modal-iteminfo{flex:1;min-width:0}
-.offer-modal-condition{display:inline-block;background:rgba(245,158,11,.25);color:#fcd34d;font-size:.72rem;font-weight:700;padding:.18rem .5rem;border-radius:4px;margin-top:.35rem;text-transform:uppercase;letter-spacing:.3px}
-.offer-modal-bundle-items{margin-top:.6rem;font-size:.78rem;line-height:1.5;color:#cbd5e1;background:rgba(255,255,255,.05);padding:.6rem .75rem;border-radius:6px;border-left:3px solid #f59e0b}
-.offer-modal-bundle-items strong{color:#fcd34d;display:block;margin-bottom:.2rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px}
-.offer-modal-close{position:absolute;top:.8rem;right:1rem;background:transparent;border:none;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1;padding:.2rem .5rem;border-radius:4px}
-.offer-modal-close:hover{background:rgba(255,255,255,.15)}
-.offer-modal-body{padding:1.5rem}
-.offer-modal-body label{display:block;font-size:.8rem;font-weight:600;color:#374151;margin-bottom:.3rem;margin-top:.7rem}
-.offer-modal-body label:first-child{margin-top:0}
-.offer-modal-body input,.offer-modal-body textarea{width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;font-size:.9rem;font-family:inherit}
-.offer-modal-body input:focus,.offer-modal-body textarea:focus{border-color:#f59e0b;outline:none;box-shadow:0 0 0 3px rgba(245,158,11,.15)}
-.offer-modal-body textarea{resize:vertical;min-height:60px}
-.offer-modal-body .offer-input-wrap{position:relative}
-.offer-modal-body .offer-input-wrap span{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:#6b7280;font-weight:700}
-.offer-modal-body .offer-input-wrap input{padding-left:1.5rem;font-size:1.1rem;font-weight:700}
-.offer-modal-submit{width:100%;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);color:#fff;border:none;padding:.85rem;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;margin-top:1rem;transition:all .2s}
-.offer-modal-submit:hover{background:linear-gradient(135deg,#d97706 0%,#b45309 100%)}
-.offer-modal-submit:disabled{opacity:.6;cursor:not-allowed}
-.offer-modal-success{display:none;background:#d1fae5;color:#065f46;padding:1rem;border-radius:8px;margin-top:1rem;text-align:center;font-weight:600}
-.offer-modal-success.active{display:block}
-.offer-modal-note{font-size:.75rem;color:#6b7280;margin-top:.8rem;text-align:center;font-style:italic}
 .btn-specs{background:#e2e8f0;color:#475569}
 .btn-specs:hover{background:#cbd5e1}
 .badge-sold-out{background:#dc2626;color:#fff;font-size:.75rem;font-weight:700;padding:.3rem .8rem;border-radius:4px;text-transform:uppercase;letter-spacing:.5px}
@@ -134,23 +99,19 @@ a{color:#2563eb;text-decoration:none}
 .card.sold-out .card-img::after{content:'SOLD';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(220,38,38,.9);color:#fff;font-size:1.5rem;font-weight:800;padding:.5rem 1.5rem;border-radius:8px;letter-spacing:2px}
 
 .bundles-section{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:2rem;border-radius:12px;margin:2rem 0}
-.bundles-section h2{color:#fff;font-size:1.5rem;text-align:center;margin-bottom:.4rem}
-.bundles-subhead{color:#cbd5e1;font-size:.95rem;text-align:center;margin-bottom:1.5rem;max-width:700px;margin-left:auto;margin-right:auto;line-height:1.5}
-.bundle-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem}
-.bundle-card{flex:0 1 calc(33.333% - 0.667rem);min-width:280px;max-width:380px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1.2rem;transition:all .2s;display:flex;flex-direction:column;box-sizing:border-box}
-@media (max-width:900px){.bundle-card{flex:0 1 calc(50% - 0.5rem)}}
-@media (max-width:600px){.bundle-card{flex:0 1 100%;max-width:none}}
+.bundles-section h2{color:#fff;font-size:1.5rem;text-align:center;margin-bottom:1rem}
+.bundle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.bundle-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1.2rem;transition:all .2s}
 .bundle-card:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
 .bundle-icon{font-size:2rem;margin-bottom:.5rem}
 .bundle-name{color:#f59e0b;font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
 .bundle-desc{color:#94a3b8;font-size:.8rem;margin-bottom:.8rem;line-height:1.4}
-.bundle-items-label{color:#e2e8f0;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;margin-top:.3rem}
-.bundle-items-list{list-style:none;padding:0;margin:0 0 1rem 0;display:flex;flex-direction:column;gap:.3rem;flex:1}
-.bundle-item-link{display:block;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#e2e8f0;padding:.5rem .7rem;border-radius:6px;font-size:.78rem;line-height:1.35;cursor:pointer;transition:all .15s;text-align:left;width:100%;font-family:inherit}
-.bundle-item-link:hover{background:rgba(245,158,11,.18);border-color:#f59e0b;color:#fff;transform:translateX(2px)}
-.bundle-item-link .arrow{float:right;color:#f59e0b;font-weight:700;margin-left:.4rem}
-.btn-bundle{display:block;width:100%;padding:.6rem;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);color:#fff;border:none;border-radius:6px;font-weight:700;cursor:pointer;font-size:.85rem;margin-top:auto;box-shadow:0 2px 6px rgba(217,119,6,.3)}
-.btn-bundle:hover{background:linear-gradient(135deg,#d97706 0%,#b45309 100%)}
+.bundle-pricing{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.3rem}
+.bundle-price{color:#10b981;font-size:1.3rem;font-weight:800}
+.bundle-original{color:#64748b;text-decoration:line-through;font-size:.85rem}
+.bundle-savings{color:#f59e0b;font-size:.8rem;font-weight:600}
+.btn-bundle{display:block;width:100%;padding:.5rem;background:#f59e0b;color:#1a1a2e;border:none;border-radius:6px;font-weight:700;cursor:pointer;margin-top:.5rem;font-size:.85rem}
+.btn-bundle:hover{background:#d97706}
 
 .services{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin:2rem auto;max-width:1100px;justify-content:center}
 @media(min-width:1000px){.services{grid-template-columns:repeat(4,1fr)}}
@@ -212,22 +173,22 @@ a{color:#2563eb;text-decoration:none}
   <span>&#x1f6e9;&#xfe0f; Nationwide Shipping Available (additional cost applies)</span>
   <span>&#x1f9f9; Professional Cleaning & Testing</span>
   <span>&#x1f527; Repair Services Available</span>
-  <span>&#x1f4b0; Bundle Deals Available</span>
+  <span>&#x1f4b0; Bulk & Bundle Discounts</span>
 </div>
-<div class="info-banner">&#x1f4e6; Some items are priced per case or lot and include multiple units — check the quantity listed with each item.</div>
-<div class="info-banner" style="background:#eff6ff;border-bottom-color:#3b82f6;color:#1e3a8a">&#x1f91d; Submitting an offer is an invitation to negotiate, not a guaranteed sale. We reserve the right to accept, decline, or counter any offer. Every interaction will be handled fairly and in good faith.</div>
+<div class="info-banner">&#x1f4e6; Some items are priced per case or lot and include multiple units — check the quantity listed with each item. Bulk pricing available on request.</div>
+<div class="info-banner" style="background:#eff6ff;border-bottom-color:#3b82f6;color:#1e3a8a">&#x1f4c8; Prices are subject to change at any time due to evolving market conditions. Availability and pricing confirmed at time of inquiry.</div>
 
 <!-- ========== HOME PAGE ========== -->
 <div class="page active" id="page-home">
 
 <div class="hero">
-  <h1>Liquidation Pricing &mdash; <span>Submit Your Offer</span></h1>
-  <p>Restaurant-grade equipment from top brands. Every item professionally cleaned and tested. Submit your best offer on any item &mdash; we respond within 24 hours. Repairs available for non-working units.</p>
+  <h1>Premium Kitchen Equipment at <span>Liquidation Prices</span></h1>
+  <p>Restaurant-grade equipment from top brands. Every item professionally cleaned and tested. Repairs available for non-working units with upfront adjusted pricing.</p>
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">579</div><div class="stat-label">Items Available</div></div>
     <div class="stat"><div class="stat-num">18</div><div class="stat-label">Categories</div></div>
     <div class="stat"><div class="stat-num">5</div><div class="stat-label">Bundle Deals</div></div>
-    <div class="stat"><div class="stat-num">&#x1f3f7;&#xfe0f;</div><div class="stat-label">Make an Offer</div></div>
+    <div class="stat"><div class="stat-num">60%+</div><div class="stat-label">Below Retail</div></div>
   </div>
   <div class="hero-badges">
     <div class="badge">Broward County, FL</div>
@@ -244,6 +205,8 @@ a{color:#2563eb;text-decoration:none}
 
 <div class="disclaimer">
   &#x1f4f7; Product images shown are stock manufacturer photos for reference only. Actual items may differ based on condition. Contact us for detailed photos of specific items.</div>
+<div class="disclaimer" style="background:#ecfdf5;border-color:#6ee7b7;color:#065f46">&#x1f4b0; <strong>Multi-Item Discount:</strong> Purchasing multiple items? Ask about our discounted package pricing! The more you buy, the more you save.
+</div>
 
 <div class="cat-bar" id="catBar"></div>
 
@@ -267,15 +230,14 @@ a{color:#2563eb;text-decoration:none}
     <div class="service-card">
       <div class="service-icon">&#x1f6e9;&#xfe0f;</div>
       <div class="service-title">Nationwide Shipping</div>
-      <div class="service-text">We ship equipment across the entire United States. Shipping is an additional cost on top of your accepted offer &mdash; contact us for a freight quote to your location.</div>
+      <div class="service-text">We ship equipment across the entire United States. Shipping is an additional cost on top of the item price &mdash; contact us for a freight quote to your location.</div>
     </div>
   </div>
 
   <div id="homeCatalog"></div>
 
   <div class="bundles-section" id="bundles">
-    <h2>&#x1f4e6; Bundled Pricing &mdash; Get an Even Better Deal</h2>
-    <p class="bundles-subhead">Buy multiple items together and save. Click any item below to view it, or submit one offer for the whole bundle &mdash; we&rsquo;ll work with you on the best price.</p>
+    <h2>&#x1f4e6; Bundle Deals — Save Up to 25%</h2>
     <div class="bundle-grid" id="bundleGrid"></div>
   </div>
 </div>
@@ -307,14 +269,14 @@ a{color:#2563eb;text-decoration:none}
     </select>
     <select id="filterLocation" onchange="doSearch()">
       <option value="">All Locations</option>
-      <option value="Broward">Broward County</option>
+      <option value="Broward">Broward County, FL</option>
       <option value="Freight &amp; Aruba">Outside Broward County</option>
     </select>
     <select id="sortBy" onchange="doSearch()">
       <option value="relevance">Sort: Relevance</option>
+      <option value="price_low">Price: Low to High</option>
+      <option value="price_high">Price: High to Low</option>
       <option value="name_az">Name: A-Z</option>
-      <option value="retail_high">Retail Value: High to Low</option>
-      <option value="retail_low">Retail Value: Low to High</option>
     </select>
   </div>
   <div class="result-count" id="resultCount"></div>
@@ -460,7 +422,7 @@ function buildCatTabs(){
   });
 }
 
-var LOCATIONS=[{key:'Broward',label:'Broward County'},{key:'Freight & Aruba',label:'Outside Broward County'}];
+var LOCATIONS=[{key:'Broward',label:'Broward County, FL'},{key:'Freight & Aruba',label:'Outside Broward County'}];
 function buildCategoryFilter(){
   var sel = document.getElementById('filterCategory');
   CATEGORIES.forEach(function(cat){
@@ -475,7 +437,7 @@ function buildHomeCatalog(){
   var container = document.getElementById('homeCatalog');
   CATEGORIES.forEach(function(cat){
     var items = CATALOG.filter(function(i){ return i.display_category === cat; });
-    items.sort(function(a,b){ return (b.retail_price||0) - (a.retail_price||0); });
+    items.sort(function(a,b){ return (b.asking_price||0) - (a.asking_price||0); });
     var top = items.slice(0, 4);
 
     var section = document.createElement('div');
@@ -508,15 +470,13 @@ function buildCard(item){
   if(cond.indexOf('Brand New')>=0||cond==='New') condClass='badge-brand-new';
   if(cond.indexOf('Not Working')>=0) condClass='badge-not-working';
 
-  // OFFERS VERSION: Hide asking price entirely. Show retail with strikethrough only.
-  var priceHtml = '';
-  if(item.retail_price && item.retail_price > 0){
-    priceHtml = '<span class="price-retail-struck">$'+formatNum(item.retail_price)+' retail</span>';
-  } else {
-    priceHtml = '<span class="price-retail-struck" style="visibility:hidden">&nbsp;</span>';
+  var priceHtml = item.price_tbd ? '<span class="price-main" style="color:#d97706">Price TBD</span>' : '<span class="price-main">$'+formatNum(item.asking_price||0)+'</span>';
+  if(!item.price_tbd && item.retail_price && item.retail_price>(item.asking_price||0)){
+    priceHtml += '<span class="price-retail">$'+formatNum(item.retail_price)+' retail</span>';
   }
+  /* market value removed - retail price is sufficient */
   if(item.repair_price){
-    priceHtml += '<div class="price-repair">&#x1f527; Repair available</div>';
+    priceHtml += '<div class="price-repair">&#x1f527; Repaired: $'+formatNum(item.repair_price)+'</div>';
   }
 
   var qtyBadge = item.qty>1 ? '<span class="badge-sm badge-qty">Qty: '+item.qty+'</span>' : '';
@@ -527,7 +487,7 @@ function buildCard(item){
     actionsHtml = '<div class="card-actions"><span class="btn-sm" style="background:#fee2e2;color:#991b1b;cursor:default;flex:1;text-align:center;font-weight:700">Sold Out</span></div>';
   } else {
     actionsHtml = '<div class="card-actions">'+
-    '<a class="btn-sm btn-make-offer" onclick="openOfferModal('+item.id+')">&#x1f3f7;&#xfe0f; Make an Offer</a>'+
+    '<a class="btn-sm btn-inquire" onclick="inquireItem(\''+escHtml(item.name).substring(0,60).replace(/'/g,"\\'")+'\',\''+escHtml(cond).replace(/'/g,"\\'")+'\','+String(item.asking_price||0)+')">Inquire</a>'+
     (item.product_url ? '<a class="btn-sm btn-specs" href="'+item.product_url+'" target="_blank" rel="noopener">Specs</a>' : '')+
     '</div>';
   }
@@ -542,107 +502,11 @@ function buildCard(item){
   return card;
 }
 
-// OFFERS VERSION: opens modal for offer submission. Accepts a CATALOG item id.
-function openOfferModal(itemId){
-  var item = null;
-  // Find item by id. itemId may be number or string.
-  for(var i=0;i<CATALOG.length;i++){
-    if(CATALOG[i].id === itemId || String(CATALOG[i].id) === String(itemId)){ item = CATALOG[i]; break; }
-  }
-  if(!item){ console.warn('openOfferModal: item not found for id', itemId); return; }
-
-  // Show single-item row, hide bundle list
-  document.getElementById('offerSingleItemRow').style.display = 'flex';
-  document.getElementById('offerBundleItems').style.display = 'none';
-
-  // Image (if available)
-  var imgEl = document.getElementById('offerItemImage');
-  var phEl = document.getElementById('offerItemImagePh');
-  if(item.image_url){
-    imgEl.src = item.image_url;
-    imgEl.alt = item.name.substring(0,80);
-    imgEl.style.display = 'block';
-    phEl.style.display = 'none';
-    imgEl.onerror = function(){ imgEl.style.display='none'; phEl.style.display='flex'; };
-  } else {
-    imgEl.style.display = 'none';
-    phEl.style.display = 'flex';
-  }
-
-  // Name
-  document.getElementById('offerModalItemName').textContent = item.name;
-
-  // Condition badge
-  var condEl = document.getElementById('offerItemCondition');
-  if(item.condition){
-    condEl.textContent = 'Condition: ' + item.condition;
-    condEl.style.display = 'inline-block';
-  } else {
-    condEl.style.display = 'none';
-  }
-
-  // Retail anchor
-  var retailLine = document.getElementById('offerRetailDisplay');
-  if(item.retail_price && item.retail_price > 0){
-    retailLine.textContent = 'MSRP / Retail: $' + formatNum(item.retail_price);
-    retailLine.style.display = 'block';
-  } else {
-    retailLine.style.display = 'none';
-  }
-
-  // Reset form, then re-stamp hidden fields
-  document.getElementById('offerForm').reset();
-  document.getElementById('offerHiddenItem').value = item.name;
-  document.getElementById('offerHiddenCondition').value = item.condition || '';
-  document.getElementById('offerHiddenRetail').value = item.retail_price || 0;
-  document.getElementById('offerSuccess').classList.remove('active');
-  document.getElementById('offerForm').style.display = 'block';
-  document.getElementById('offerModal').classList.add('active');
-  setTimeout(function(){ document.getElementById('offerAmount').focus(); }, 100);
-}
-function closeOfferModal(){
-  document.getElementById('offerModal').classList.remove('active');
-}
-function submitOffer(e){
-  e.preventDefault();
-  var submitBtn = document.getElementById('offerSubmitBtn');
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Submitting...';
-  var formData = new FormData(document.getElementById('offerForm'));
-  fetch('https://formspree.io/f/mrerjazz', {
-    method: 'POST',
-    body: formData,
-    headers: { 'Accept': 'application/json' }
-  })
-  .then(function(response){
-    if(response.ok){
-      document.getElementById('offerForm').style.display = 'none';
-      document.getElementById('offerSuccess').classList.add('active');
-      setTimeout(closeOfferModal, 3500);
-    } else {
-      alert('Sorry, there was a problem sending your offer. Please try again or use the Contact page.');
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit Offer';
-    }
-  })
-  .catch(function(){
-    alert('Sorry, there was a network error. Please try again.');
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Submit Offer';
-  });
-  return false;
-}
-// Close modal on backdrop click or Escape key
-document.addEventListener('click', function(e){
-  if(e.target && e.target.id === 'offerModal'){ closeOfferModal(); }
-});
-document.addEventListener('keydown', function(e){
-  if(e.key === 'Escape'){ closeOfferModal(); }
-});
-// Backward compatibility (legacy): try to resolve by name and open modal
-function inquireItem(name, cond, price){
-  var match = CATALOG.find(function(i){ return i.name === name; });
-  if(match) openOfferModal(match.id);
+function inquireItem(name,cond,price){
+  showPage('contact');
+  document.getElementById('cf-interest').value = 'Specific Item';
+  document.getElementById('cf-message').value = 'Hi, I am interested in:\n\nItem: '+name+'\nCondition: '+cond+'\nAsking Price: $'+formatNum(price)+'\n\nPlease send me more details, photos, and a shipping quote.';
+  document.getElementById('cf-message').scrollIntoView({behavior:'smooth',block:'center'});
 }
 
 function showCategoryInBrowse(cat){
@@ -650,7 +514,7 @@ function showCategoryInBrowse(cat){
   document.getElementById('searchInput').value = '';
   document.getElementById('filterCondition').value = '';
   document.getElementById('filterCategory').value = cat;
-  document.getElementById('sortBy').value = 'retail_high';
+  document.getElementById('sortBy').value = 'price_high';
   doSearch();
 }
 
@@ -795,17 +659,17 @@ function doSearch(){
     results.push({item: item, score: score});
   });
 
-  // Sort by relevance score first, then by selected sort (OFFERS VERSION: retail-based instead of asking-price-based)
+  // Sort by relevance score first, then by selected sort
   if(query && (sort==='relevance' || !sort)){
     results.sort(function(a,b){return b.score - a.score;});
-  } else if(sort==='retail_high'){
-    results.sort(function(a,b){return(b.item.retail_price||0)-(a.item.retail_price||0);});
-  } else if(sort==='retail_low'){
-    results.sort(function(a,b){return(a.item.retail_price||0)-(b.item.retail_price||0);});
+  } else if(sort==='price_high'){
+    results.sort(function(a,b){return(b.item.asking_price||0)-(a.item.asking_price||0);});
+  } else if(sort==='price_low'){
+    results.sort(function(a,b){return(a.item.asking_price||0)-(b.item.asking_price||0);});
   } else if(sort==='name_az'){
     results.sort(function(a,b){return a.item.name.localeCompare(b.item.name);});
   } else {
-    results.sort(function(a,b){return(b.item.retail_price||0)-(a.item.retail_price||0);});
+    results.sort(function(a,b){return(b.item.asking_price||0)-(a.item.asking_price||0);});
   }
 
   var items = results.map(function(r){return r.item;});
@@ -879,73 +743,26 @@ function doSearch(){
 function buildBundles(){
   var grid = document.getElementById('bundleGrid');
   var icons = {pizza:'\ud83c\udf55',wine:'\ud83c\udf77',flame:'\ud83d\udd25',knife:'\ud83d\udd2a',factory:'\ud83c\udfed'};
-  // Build a quick id-to-item lookup so we can resolve each bundle's item IDs to names
-  var byId = {};
-  CATALOG.forEach(function(it){ byId[it.id] = it; });
-
   BUNDLES.forEach(function(b){
     var card = document.createElement('div');
     card.className = 'bundle-card';
-
-    // Build the clickable item list \u2014 each entry shows item name + condition badge
-    var itemsHtml = '<ul class="bundle-items-list">';
-    (b.items || []).forEach(function(itemId){
-      var it = byId[itemId];
-      if(!it) return;
-      var safeName = escHtml(it.name).substring(0,80);
-      var safeCond = escHtml(it.condition||'');
-      itemsHtml += '<li><button type="button" class="bundle-item-link" '+
-        'onclick="openOfferModal('+it.id+')" title="Make an offer on this item">'+
-        safeName + (safeCond ? ' <span style="opacity:.7;font-size:.72rem">('+safeCond+')</span>' : '') +
-        '<span class="arrow">&rarr;</span></button></li>';
-    });
-    itemsHtml += '</ul>';
-
-    var bundleKey = b.slug || b.name;
     card.innerHTML = '<div class="bundle-icon">'+(icons[b.icon]||'\ud83d\udce6')+'</div>'+
-      '<div class="bundle-name">'+escHtml(b.name)+'</div>'+
-      '<div class="bundle-desc">'+escHtml(b.description||'')+'</div>'+
-      '<div class="bundle-items-label">Bundle Includes &mdash; click any to make an offer:</div>'+
-      itemsHtml+
-      '<button class="btn-bundle" onclick="openBundleOffer(\''+bundleKey.replace(/'/g,"\\'")+'\')">&#x1f3f7;&#xfe0f; Make an Offer on Whole Bundle</button>';
+      '<div class="bundle-name">'+b.name+'</div>'+
+      '<div class="bundle-desc">'+b.description+'</div>'+
+      '<div class="bundle-pricing">'+
+      '<span class="bundle-price">$'+formatNum(b.bundle_price)+'</span>'+
+      '<span class="bundle-original">$'+formatNum(b.individual_total)+'</span>'+
+      '</div>'+
+      '<div class="bundle-savings">Save $'+formatNum(b.savings)+' ('+Math.round(b.discount*100)+'% off)</div>'+
+      '<button class="btn-bundle" onclick="inquireBundle(\''+b.name.replace(/'/g,"\\'")+'\','+String(b.bundle_price)+')">Inquire About Bundle</button>';
     grid.appendChild(card);
   });
 }
 
-// Open the offer modal for a whole bundle. Shows the bundle name + comma-separated item list with conditions.
-function openBundleOffer(bundleSlug){
-  // Find bundle by slug or name
-  var b = null;
-  for(var i=0;i<BUNDLES.length;i++){
-    if(BUNDLES[i].slug === bundleSlug || BUNDLES[i].name === bundleSlug){ b = BUNDLES[i]; break; }
-  }
-  if(!b){ console.warn('openBundleOffer: bundle not found for', bundleSlug); return; }
-
-  // Build comma-separated item list: "Name (Condition), Name (Condition), ..."
-  var byId = {};
-  CATALOG.forEach(function(it){ byId[it.id] = it; });
-  var parts = (b.items||[]).map(function(id){
-    var it = byId[id]; if(!it) return null;
-    var cond = it.condition ? ' (' + it.condition + ')' : '';
-    return it.name + cond;
-  }).filter(Boolean);
-  var itemListText = parts.join(', ');
-
-  // Hide single-item row, show bundle items list
-  document.getElementById('offerSingleItemRow').style.display = 'none';
-  document.getElementById('offerBundleItems').style.display = 'block';
-  document.getElementById('offerBundleItemsText').textContent = itemListText;
-
-  // Still set the item-name field at top (visible in single row; hidden here) and Formspree hidden fields
-  document.getElementById('offerModalItemName').textContent = '[Bundle] ' + b.name;
-  document.getElementById('offerForm').reset();
-  document.getElementById('offerHiddenItem').value = '[Bundle] ' + b.name + ' — Items: ' + itemListText;
-  document.getElementById('offerHiddenCondition').value = 'Bundle';
-  document.getElementById('offerHiddenRetail').value = 0;
-  document.getElementById('offerSuccess').classList.remove('active');
-  document.getElementById('offerForm').style.display = 'block';
-  document.getElementById('offerModal').classList.add('active');
-  setTimeout(function(){ document.getElementById('offerAmount').focus(); }, 100);
+function inquireBundle(name,price){
+  showPage('contact');
+  document.getElementById('cf-interest').value = 'Bundle Deal';
+  document.getElementById('cf-message').value = 'Hi, I am interested in the "'+name+'" bundle at $'+formatNum(price)+'.\n\nPlease send me more details.';
 }
 
 function submitForm(e){
@@ -1009,63 +826,5 @@ function formatNum(n){
   return Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 </script>
-
-<!-- ========== OFFER MODAL ========== -->
-<div class="offer-modal-backdrop" id="offerModal" role="dialog" aria-modal="true" aria-labelledby="offerModalHeading">
-  <div class="offer-modal" onclick="event.stopPropagation()">
-    <div class="offer-modal-header">
-      <button class="offer-modal-close" onclick="closeOfferModal()" aria-label="Close">&times;</button>
-      <h3 id="offerModalHeading">&#x1f3f7;&#xfe0f; Submit Your Best Offer</h3>
-      <div class="offer-modal-itemrow" id="offerSingleItemRow">
-        <img id="offerItemImage" class="offer-modal-image" alt="" style="display:none">
-        <div id="offerItemImagePh" class="offer-modal-image-placeholder" style="display:none">&#x1f4e6;</div>
-        <div class="offer-modal-iteminfo">
-          <div class="item-name" id="offerModalItemName"></div>
-          <div id="offerItemCondition" class="offer-modal-condition" style="display:none"></div>
-          <div class="item-name" id="offerRetailDisplay" style="margin-top:.3rem;font-style:italic;font-weight:400;opacity:.85"></div>
-        </div>
-      </div>
-      <div id="offerBundleItems" class="offer-modal-bundle-items" style="display:none">
-        <strong>Bundle Includes:</strong>
-        <span id="offerBundleItemsText"></span>
-      </div>
-    </div>
-    <div class="offer-modal-body">
-      <form id="offerForm" onsubmit="return submitOffer(event)">
-        <input type="hidden" name="_subject" value="New Offer Submitted via Website">
-        <input type="hidden" name="_form_type" value="Make an Offer">
-        <input type="hidden" name="Item" id="offerHiddenItem">
-        <input type="hidden" name="Condition" id="offerHiddenCondition">
-        <input type="hidden" name="Retail Price" id="offerHiddenRetail">
-
-        <label for="offerAmount">Your Offer *</label>
-        <div class="offer-input-wrap">
-          <span>$</span>
-          <input type="number" id="offerAmount" name="Offer Amount" min="1" step="1" required placeholder="0">
-        </div>
-
-        <label for="offerName">Your Name *</label>
-        <input type="text" id="offerName" name="Name" required placeholder="John Doe">
-
-        <label for="offerEmail">Email *</label>
-        <input type="email" id="offerEmail" name="Email" required placeholder="you@example.com">
-
-        <label for="offerPhone">Phone</label>
-        <input type="tel" id="offerPhone" name="Phone" placeholder="(555) 123-4567">
-
-        <label for="offerNotes">Notes / Questions</label>
-        <textarea id="offerNotes" name="Notes" placeholder="Any questions about condition, shipping, or pickup?"></textarea>
-
-        <button type="submit" class="offer-modal-submit" id="offerSubmitBtn">Submit Offer</button>
-        <div class="offer-modal-note">We respond to every offer within 24 hours. Multiple offers welcome &mdash; the best one wins.</div>
-      </form>
-      <div class="offer-modal-success" id="offerSuccess">
-        &#x2705; <strong>Offer submitted!</strong><br>
-        We'll review and respond within 24 hours.
-      </div>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
