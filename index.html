@@ -509,7 +509,9 @@ function buildCard(item){
   if(cond.indexOf('Not Working')>=0) condClass='badge-not-working';
 
   // OFFERS VERSION: Hide asking price entirely. Show retail with strikethrough only.
-  var qtyNote = (item.qty && item.qty>1) ? '<span class="price-qty-note">lot of '+item.qty+'</span>' : '<span class="price-qty-note">single item</span>';
+  var _nm=(item.name||'');
+  var _hasCount=/\b(box|boxes|case|cases|pack|packs|sleeve|sleeves|set|sets|dozen|carton|cartons)\b/i.test(_nm)||/\d+\s+(?:brand new\s+)?in box\b/i.test(_nm)||/\bvarious\b/i.test(_nm)||/\bincluding\b/i.test(_nm)||/^\s*\d+\b/.test(_nm);
+  var qtyNote = _hasCount ? '' : ((item.qty && item.qty>1) ? '<span class="price-qty-note">lot of '+item.qty+'</span>' : '<span class="price-qty-note">single item</span>');
   var priceHtml = '';
   if(item.retail_price && item.retail_price > 0){
     priceHtml = '<span class="price-retail-struck">$'+formatNum(item.retail_price)+' retail</span> '+qtyNote;
